@@ -1,0 +1,24 @@
+name: Validate README Markers
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  check-markers:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify markers exist in README
+        run: |
+          if grep -q "<!--START_SECTION:activity-->" README.md && grep -q "<!--END_SECTION:activity-->" README.md; then
+            echo "✅ 成功：README 中包含必須的活動標記！"
+          else
+            echo "❌ 錯誤：README 遺失了活動標記，自動更新將會失敗！"
+            exit 1
+          fi
