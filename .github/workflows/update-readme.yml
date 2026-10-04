@@ -1,0 +1,19 @@
+name: Update README with recent activity
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # 每天午夜執行一次
+  workflow_dispatch: # 允許在 GitHub 網頁上手動按按鈕觸發，方便測試
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Update README activity
+        uses: jamesgeorge007/github-activity-readme@master
+        env:
+          # 這裡呼叫了我們在 GitHub 設定的 Secrets，嚴格遵守最低權限且不印出 Token
+          GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
